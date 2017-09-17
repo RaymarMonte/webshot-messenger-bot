@@ -116,6 +116,9 @@ function sendImageMessage(sender, imagePath) {
     if (!error) {
       fs.unlink(imagePath);
 		}
+    else {
+      console.log(error);
+    }
   });
 }
 
