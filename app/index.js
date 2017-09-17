@@ -114,6 +114,9 @@ function sendImageMessage(sender, imagePath) {
 		}
   }, function(error, response, body) {
     if (!error) {
+      if (response.body.error) {
+        console.log('Response body error' + response.body.error);
+      }
       console.log('success!');
       fs.unlink(imagePath);
 		}
