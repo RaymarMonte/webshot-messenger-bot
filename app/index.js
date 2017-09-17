@@ -28,6 +28,7 @@ app.get('/', function (req, res) {
   if (req.query['page']) {
     getScreenshot(req.query['page'], function(screenshot) {
       var screenshotPath = path.join(APP_DIR, screenshot);
+      console.log(screenshotPath);
       if (screenshotPath) {
         res.download(screenshotPath, function(err) {
           if (!err) {
