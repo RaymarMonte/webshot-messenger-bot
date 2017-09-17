@@ -66,7 +66,7 @@ app.post('/webhook/', function (req, res) {
 		    getScreenshot(text, function(screenshot) {
           if (screenshot) {
             var screenshotPath = path.join(APP_DIR, screenshot);
-            sendImageMessage(sender, screenshot);
+            sendImageMessage(sender, screenshotPath);
           }
           // else {
           //   sendTextMessage(sender, 'Hi! Please give me a valid URL so I can'
