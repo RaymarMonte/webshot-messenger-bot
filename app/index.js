@@ -64,8 +64,8 @@ app.post('/webhook/', function (req, res) {
 		    let text = event.message.text;
 		    getScreenshot(text, function(screenshot) {
           if (screenshot) {
-            var screenshotPath = path.join(APP_DIR, screenshot);
-            sendImageMessage(sender, screenshotPath);
+            // var screenshotPath = path.join(APP_DIR, screenshot);
+            sendImageMessage(sender, screenshot);
           }
           else {
             sendTextMessage(sender, 'Hi! Please give me a valid URL so I can'
@@ -74,6 +74,7 @@ app.post('/webhook/', function (req, res) {
         })
 	    }
     }
+    console.log("Sending status 200...");
     res.sendStatus(200)
 });
 
@@ -84,7 +85,7 @@ function sendTextMessage(sender, text) {
 	    qs: {access_token:token},
 	    method: 'POST',
 		json: {
-		    recipient: {id:sender},
+      recipient: {id:sender},
 			message: messageData,
 		}
 	}, function(error, response, body) {
@@ -97,25 +98,25 @@ function sendTextMessage(sender, text) {
 }
 
 function sendImageMessage(sender, imagePath) {
-    let messageData = { attachment: {
-      type: 'image',
-      payload: {}
-    }};
-    let fileData = imagePath + ';type=image/png';
-    request({
-	    url: 'https://graph.facebook.com/v2.6/me/messages',
-	    qs: {access_token:token},
-	    method: 'POST',
+  let messageData = { attachment: {
+    type: 'image',
+    payload: {}
+  }};
+  let fileData = imagePath + ';type=image/png';
+  request({
+    url: 'https://graph.facebook.com/v2.6/me/messages',
+	  qs: {access_token:token},
+	  method: 'POST',
 		json: {
-		    recipient: {id:sender},
-			  message: messageData,
-        filedata: fileData
+      recipient: {id:sender},
+			message: messageData,
+      filedata: fileData
 		}
-	}, function(error, response, body) {
-		if (!error) {
-		    fs.unlink(imagePath);
+  }, function(error, response, body) {
+    if (!error) {
+      fs.unlink(imagePath);
 		}
-    })
+  });
 }
 
 function getScreenshot(url, callback) {
@@ -123,11 +124,12 @@ function getScreenshot(url, callback) {
   if (!filename) {
     filename = 'killme';
   }
-  var filepath = './temp/' + filename + '.png';
+  var filepath = '@/temp/' + filename + '.png';
   webshot(url, filepath, WEBSHOT_OPTIONS, function(err) {
     if (err) {
       callback(null);
     } else {
+      console.log(filepath + " generated.");
       callback(filepath);
     }
   });
