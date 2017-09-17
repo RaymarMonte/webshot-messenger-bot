@@ -10,7 +10,7 @@ const app = express();
 
 // get environment dependent phantomjs path
 const WEBSHOT_OPTIONS = {
-  phantomPath: process.env.PHANTOM_PATH
+  phantomPath: require ('phantomjs2').path
 }
 const APP_DIR = path.dirname(require.main.filename);
 
