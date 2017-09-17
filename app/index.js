@@ -65,7 +65,7 @@ app.post('/webhook/', function (req, res) {
 		    let text = event.message.text;
 		    getScreenshot(text, function(screenshot) {
           if (screenshot) {
-            // var screenshotPath = path.join(APP_DIR, screenshot);
+            var screenshotPath = path.join(APP_DIR, screenshot);
             sendImageMessage(sender, screenshot);
           }
           // else {
@@ -103,7 +103,7 @@ function sendImageMessage(sender, imagePath) {
     type: 'image',
     payload: {}
   }};
-  let fileData = imagePath + ';type=image/png';
+  let fileData = '@' + imagePath + ';type=image/png';
   request({
     url: 'https://graph.facebook.com/v2.6/me/messages',
 	  qs: {access_token:token},
@@ -132,7 +132,7 @@ function getScreenshot(url, callback) {
   if (!filename) {
     filename = 'killme';
   }
-  var filepath = '@/temp/' + filename + '.png';
+  var filepath = './temp/' + filename + '.png';
   webshot(url, filepath, WEBSHOT_OPTIONS, function(err) {
     if (err) {
       callback(null);
