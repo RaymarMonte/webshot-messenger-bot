@@ -17,7 +17,7 @@ const WEBSHOT_OPTIONS = {
     height: 'all'
   }
 }
-const APP_DIR = path.dirname(require.main.filename);
+const APP_DIR = process.cwd();
 
 // parsing configuration
 app.use(bodyParser.urlencoded({extended: false}));
@@ -27,12 +27,10 @@ app.use(bodyParser.json());
 app.get('/', function (req, res) {
   if (req.query['page']) {
     getScreenshot(req.query['page'], function(screenshot) {
-      var screenshotPath = path.join(APP_DIR, screenshot);
-      console.log(process.cwd());
-      if (screenshotPath) {
-        res.download(screenshotPath, function(err) {
+      if (screenshot) {
+        res.download(screenshot, function(err) {
           if (!err) {
-            fs.unlink(screenshotPath);
+            fs.unlink(screenshot);
           }
         });
       }
@@ -66,9 +64,9 @@ app.post('/webhook/', function (req, res) {
 		    let text = event.message.text;
 		    getScreenshot(text, function(screenshot) {
           if (screenshot) {
-            var screenshotPath = path.join(APP_DIR, screenshot);
-            console.log(screenshotPath);
-            sendImageMessage(sender, screenshotPath);
+            // var screenshotPath = path.join(APP_DIR, screenshot);
+            console.log(screenshot);
+            sendImageMessage(sender, screenshot);
           }
           // else {
           //   sendTextMessage(sender, 'Hi! Please give me a valid URL so I can'
@@ -136,6 +134,7 @@ function getScreenshot(url, callback) {
     filename = 'killme';
   }
   var filepath = './temp/' + filename + '.png';
+  var filepath = path.join(APP_DIR, '/temp', 'filename' + '.png');
   webshot(url, filepath, WEBSHOT_OPTIONS, function(err) {
     if (err) {
       callback(null);
