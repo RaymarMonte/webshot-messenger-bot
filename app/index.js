@@ -99,6 +99,7 @@ function sendTextMessage(sender, text) {
 }
 
 function sendImageMessage(sender, imagePath) {
+  console.log('Sending image: ' + imagePath);
   let messageData = { attachment: {
     type: 'image',
     payload: {}
