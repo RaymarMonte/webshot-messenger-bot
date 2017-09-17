@@ -3,6 +3,7 @@ const webshot = require('./../lib/webshot');
 const sanitize = require('sanitize-filename');
 const fs = require('fs');
 const path = require('path');
+const util = require('util')
 const express = require('express');
 const bodyParser = require('body-parser');
 const request = require('request');
@@ -115,7 +116,7 @@ function sendImageMessage(sender, imagePath) {
   }, function(error, response, body) {
     if (!error) {
       if (response.body.error) {
-        console.log('Response body error' + response.body.error);
+        console.log(util.inspect(response.body.error, false, null));
       }
       console.log('success!');
       fs.unlink(imagePath);
