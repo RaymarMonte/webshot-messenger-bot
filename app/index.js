@@ -67,10 +67,10 @@ app.post('/webhook/', function (req, res) {
             // var screenshotPath = path.join(APP_DIR, screenshot);
             sendImageMessage(sender, screenshot);
           }
-          else {
-            sendTextMessage(sender, 'Hi! Please give me a valid URL so I can'
-              + ' give you its screenshot. Thank you :)');
-          }
+          // else {
+          //   sendTextMessage(sender, 'Hi! Please give me a valid URL so I can'
+          //     + ' give you its screenshot. Thank you :)');
+          // }
         })
 	    }
     }
@@ -114,6 +114,7 @@ function sendImageMessage(sender, imagePath) {
 		}
   }, function(error, response, body) {
     if (!error) {
+      console.log('success!');
       fs.unlink(imagePath);
 		}
     else {
