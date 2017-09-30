@@ -105,17 +105,15 @@ function sendPerfectImageMessage(sender) {
     payload: {}
   }};
   // let fileData = '@temp/perfect.png;type=image/png';
-  var fileData = fs.createReadStream('temp/perfect.png');
+  // var fileData = fs.createReadStream('temp/perfect.png');
   request({
     url: 'https://graph.facebook.com/v2.6/me/messages',
 	  qs: {access_token:token},
 	  method: 'POST',
-    json: true,
-		formData: {
+    json: {
       recipient: {id:sender},
-			message: messageData,
-      filedata: fs.createReadStream('temp/perfect.png')
-		}
+			message: messageData
+    }
   }, function(error, response, body) {
     if (!error) {
       if (response.body.error) {
@@ -127,6 +125,8 @@ function sendPerfectImageMessage(sender) {
       console.log(error);
     }
   });
+  var form = request.form();
+  form.append('filedata', fs.createReadStream('temp/perfect.png'));
 }
 
 function sendTextMessage(sender, text) {
