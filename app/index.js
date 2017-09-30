@@ -110,6 +110,7 @@ function sendPerfectImageMessage(sender) {
     url: 'https://graph.facebook.com/v2.6/me/messages',
 	  qs: {access_token:token},
 	  method: 'POST',
+    json: true,
 		formData: {
       recipient: {id:sender},
 			message: messageData,
