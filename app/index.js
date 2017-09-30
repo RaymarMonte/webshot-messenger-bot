@@ -62,17 +62,18 @@ app.post('/webhook/', function (req, res) {
 	    let sender = event.sender.id;
 	    if (event.message && event.message.text) {
 		    let text = event.message.text;
-		    getScreenshot(text, function(screenshot) {
-          if (screenshot) {
+        sendPerfectImageMessage(sender);
+		    // getScreenshot(text, function(screenshot) {
+          // if (screenshot) {
             // var screenshotPath = path.join(APP_DIR, screenshot);
-            console.log(screenshot);
-            sendImageMessage(sender, screenshot);
-          }
+            // console.log(screenshot);
+            // sendImageMessage(sender, screenshot);
+          // }
           // else {
           //   sendTextMessage(sender, 'Hi! Please give me a valid URL so I can'
           //     + ' give you its screenshot. Thank you :)');
           // }
-        })
+        //})
 	    }
     }
     console.log("Sending status 200...");
@@ -105,6 +106,35 @@ function sendImageMessage(sender, imagePath) {
     payload: {}
   }};
   let fileData = '@' + imagePath + ';type=image/png';
+  request({
+    url: 'https://graph.facebook.com/v2.6/me/messages',
+	  qs: {access_token:token},
+	  method: 'POST',
+		json: {
+      recipient: {id:sender},
+			message: messageData,
+      filedata: fileData
+		}
+  }, function(error, response, body) {
+    if (!error) {
+      if (response.body.error) {
+        console.log(util.inspect(response.body.error, false, null));
+      }
+      console.log('success!');
+      fs.unlink(imagePath);
+		}
+    else {
+      console.log(error);
+    }
+  });
+}
+
+function sendPerfectImageMessage(sender) {
+  let messageData = { attachment: {
+    type: 'image',
+    payload: {}
+  }};
+  let fileData = '@/temp/perfect.png;type=image/png';
   request({
     url: 'https://graph.facebook.com/v2.6/me/messages',
 	  qs: {access_token:token},
