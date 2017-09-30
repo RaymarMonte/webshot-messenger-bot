@@ -121,8 +121,8 @@ function sendPerfectImageMessage(sender) {
     }
   });
   var form = req.form();
-  form.append('recipient', {id:sender});
-  form.append('message', messageData);
+  form.append('recipient', JSON.stringify({id:sender}));
+  form.append('message', JSON.stringify(messageData));
   form.append('filedata', fs.createReadStream('temp/perfect.png'));
 }
 
