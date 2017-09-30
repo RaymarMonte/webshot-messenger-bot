@@ -105,7 +105,7 @@ function sendPerfectImageMessage(sender) {
     payload: {}
   }};
   // let fileData = '@temp/perfect.png;type=image/png';
-  var fileData = fs.createReadStream('/temp/perfect.png');
+  var fileData = fs.createReadStream('temp/perfect.png');
   request({
     url: 'https://graph.facebook.com/v2.6/me/messages',
 	  qs: {access_token:token},
