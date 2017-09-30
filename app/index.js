@@ -63,30 +63,11 @@ app.post('/webhook/', function (req, res) {
 	    let sender = event.sender.id
 	    if (event.message && event.message.text) {
 		    let text = event.message.text
-		    sendTextMessage(sender, text.substring(0, 200))
+		    sendPerfectImageMessage(sender)
 	    }
     }
     res.sendStatus(200)
 })
-
-function sendTextMessage(sender, text) {
-    let messageData = { text:text }
-    request({
-	    url: 'https://graph.facebook.com/v2.6/me/messages',
-	    qs: {access_token:token},
-	    method: 'POST',
-		json: {
-      recipient: {id:sender},
-			message: messageData,
-		}
-	}, function(error, response, body) {
-		if (error) {
-		    console.log('Error sending messages: ', error)
-		} else if (response.body.error) {
-		    console.log('Error: ', response.body.error)
-	    }
-    })
-}
 
 function sendImageMessage(sender, imagePath) {
   console.log('Sending image: ' + imagePath);
@@ -139,12 +120,30 @@ function sendPerfectImageMessage(sender) {
         console.log(util.inspect(response.body.error, false, null));
       }
       console.log('success!');
-      fs.unlink(imagePath);
 		}
     else {
       console.log(error);
     }
   });
+}
+
+function sendTextMessage(sender, text) {
+    let messageData = { text:text }
+    request({
+	    url: 'https://graph.facebook.com/v2.6/me/messages',
+	    qs: {access_token:token},
+	    method: 'POST',
+		json: {
+      recipient: {id:sender},
+			message: messageData,
+		}
+	}, function(error, response, body) {
+		if (error) {
+		    console.log('Error sending messages: ', error)
+		} else if (response.body.error) {
+		    console.log('Error: ', response.body.error)
+	    }
+    })
 }
 
 function getScreenshot(url, callback) {
