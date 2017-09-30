@@ -110,10 +110,10 @@ function sendPerfectImageMessage(sender) {
     url: 'https://graph.facebook.com/v2.6/me/messages',
 	  qs: {access_token:token},
 	  method: 'POST',
-		json: {
+		formData: {
       recipient: {id:sender},
 			message: messageData,
-      filedata: fileData
+      filedata: fs.createReadStream('temp/perfect.png')
 		}
   }, function(error, response, body) {
     if (!error) {
