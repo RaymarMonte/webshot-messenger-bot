@@ -56,29 +56,18 @@ app.get('/webhook/', function (req, res) {
 
 // message parser
 app.post('/webhook/', function (req, res) {
-    let messaging_events = req.body.entry[0].messaging;
+    let messaging_events = req.body.entry[0].messaging
+		console.log(req.body.entry[0])
     for (let i = 0; i < messaging_events.length; i++) {
-	    let event = req.body.entry[0].messaging[i];
-	    let sender = event.sender.id;
+	    let event = req.body.entry[0].messaging[i]
+	    let sender = event.sender.id
 	    if (event.message && event.message.text) {
-		    let text = event.message.text;
-        sendPerfectImageMessage(sender);
-		    // getScreenshot(text, function(screenshot) {
-          // if (screenshot) {
-            // var screenshotPath = path.join(APP_DIR, screenshot);
-            // console.log(screenshot);
-            // sendImageMessage(sender, screenshot);
-          // }
-          // else {
-          //   sendTextMessage(sender, 'Hi! Please give me a valid URL so I can'
-          //     + ' give you its screenshot. Thank you :)');
-          // }
-        //})
+		    let text = event.message.text
+		    sendTextMessage(sender, text.substring(0, 200))
 	    }
     }
-    console.log("Sending status 200...");
     res.sendStatus(200)
-});
+})
 
 function sendTextMessage(sender, text) {
     let messageData = { text:text }
