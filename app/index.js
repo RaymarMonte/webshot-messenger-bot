@@ -155,7 +155,7 @@ function getScreenshot(url, callback) {
   if (!filename) {
     filename = 'killme';
   }
-  var filepath = '../temp/' + filename + '.png';
+  var filepath = './temp/' + filename + '.png';
   webshot(url, filepath, WEBSHOT_OPTIONS, function(err) {
     if (err) {
       callback(null);
