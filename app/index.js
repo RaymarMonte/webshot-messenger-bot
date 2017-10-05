@@ -63,40 +63,46 @@ app.post('/webhook/', function (req, res) {
 	    let sender = event.sender.id
 	    if (event.message && event.message.text) {
 		    let text = event.message.text
-		    sendPerfectImageMessage(sender)
+		    validateAndSendScreenshot(text, sender);
 	    }
     }
     res.sendStatus(200)
 })
 
-function sendImageMessage(sender, imagePath) {
-  console.log('Sending image: ' + imagePath);
+function validateAndSendScreenshot(text, sender) {
+  getScreenshot(text, function(filepath) {
+    if (filepath) {
+      sendImageMessageAndDestroy(sender, filepath);
+    }
+  });
+}
+
+function sendImageMessageAndDestroy(sender, imagePath) {
   let messageData = { attachment: {
     type: 'image',
     payload: {}
   }};
-  let fileData = '@' + imagePath + ';type=image/png';
-  request({
+
+  var req = request.post({
     url: 'https://graph.facebook.com/v2.6/me/messages',
-	  qs: {access_token:token},
-	  method: 'POST',
-		json: {
-      recipient: {id:sender},
-			message: messageData,
-      filedata: fileData
-		}
+	  qs: {access_token:token}
   }, function(error, response, body) {
     if (!error) {
       if (response.body.error) {
         console.log(util.inspect(response.body.error, false, null));
-      }
-      console.log('success!');
+      } else {
+      console.log('Image message successfully sent! Destroying..');
       fs.unlink(imagePath);
+      }
 		}
     else {
       console.log(error);
     }
   });
+  var form = req.form();
+  form.append('recipient', JSON.stringify({id:sender}));
+  form.append('message', JSON.stringify(messageData));
+  form.append('filedata', fs.createReadStream(imagePath));
 }
 
 function sendPerfectImageMessage(sender) {
@@ -104,8 +110,7 @@ function sendPerfectImageMessage(sender) {
     type: 'image',
     payload: {}
   }};
-  // let fileData = '@temp/perfect.png;type=image/png';
-  // var fileData = fs.createReadStream('temp/perfect.png');
+
   var req = request.post({
     url: 'https://graph.facebook.com/v2.6/me/messages',
 	  qs: {access_token:token}
@@ -150,8 +155,7 @@ function getScreenshot(url, callback) {
   if (!filename) {
     filename = 'killme';
   }
-  var filepath = './temp/' + filename + '.png';
-  var filepath = path.join(APP_DIR, '/temp', 'filename' + '.png');
+  var filepath = '../temp/' + filename + '.png';
   webshot(url, filepath, WEBSHOT_OPTIONS, function(err) {
     if (err) {
       callback(null);
