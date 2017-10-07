@@ -18,8 +18,7 @@ const WEBSHOT_OPTIONS = {
   shotSize: {
     width: 'window',
     height: 'all'
-  },
-  quality: 150
+  }
 }
 const APP_DIR = process.cwd();
 
@@ -162,7 +161,7 @@ function getScreenshot(url, callback, additionalOptions) {
   if (!filename) {
     filename = 'killme';
   }
-  var filepath = './temp/' + filename + '.jpg';
+  var filepath = './temp/' + filename + '.png';
 
   var options = WEBSHOT_OPTIONS;
   if (additionalOptions) {
