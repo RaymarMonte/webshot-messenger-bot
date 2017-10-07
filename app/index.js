@@ -195,8 +195,13 @@ function getScreenshot(url, callback) {
 
 function isUrl(text) {
   var result = url.parse(text);
-  console.log(result.hostname);
-  return result.hostname;
+  console.log('host:' + result.host)
+  console.log('hostname:' + result.hostname)
+  if (result.host) {
+    return true;
+  } else {
+    return false;
+  }
 }
 
 const token = "EAAbtGdEdXhABAJCJZAemnwept6ZCeKsDo11oRTySQDR0pybi10isbUyy1HsXOHZAv9JfozZBmqPkH2FSVIlODjUGedPw3pPbDoln1snmJYjcVAgckCGZBZCU0PvXD8rsliZChuibZB4xjeTqWZBiKqRuB4b95A1yAbjkr9hNIXl8CuAZDZD";
