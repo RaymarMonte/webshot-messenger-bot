@@ -82,7 +82,7 @@ function validateAndSendScreenshot(text, sender) {
         if (luckyFilepath) {
           sendImageMessageAndDestroy(sender, luckyFilepath);
         }
-      }, {renderDelay, 1000});
+      }, {renderDelay: 2000});
     }
   });
 }
