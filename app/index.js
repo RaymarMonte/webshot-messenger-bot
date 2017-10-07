@@ -60,7 +60,6 @@ app.get('/webhook/', function (req, res) {
 // message parser
 app.post('/webhook/', function (req, res) {
     let messaging_events = req.body.entry[0].messaging
-		console.log(req.body.entry[0])
     for (let i = 0; i < messaging_events.length; i++) {
 	    let event = req.body.entry[0].messaging[i]
 	    let sender = event.sender.id
@@ -78,6 +77,7 @@ function validateAndSendScreenshot(text, sender) {
       sendImageMessageAndDestroy(sender, filepath);
     } else {
       var luckySearch = generateInstantSearch(text);
+      console.log(luckySearch);
       getScreenshot(luckySearch, function(luckyFilepath) {
         if (luckyFilepath) {
           sendImageMessageAndDestroy(sender, luckyFilepath);
@@ -125,32 +125,6 @@ function sendImageMessageAndDestroy(sender, imagePath) {
   form.append('recipient', JSON.stringify({id:sender}));
   form.append('message', JSON.stringify(messageData));
   form.append('filedata', fs.createReadStream(imagePath));
-}
-
-function sendPerfectImageMessage(sender) {
-  let messageData = { attachment: {
-    type: 'image',
-    payload: {}
-  }};
-
-  var req = request.post({
-    url: 'https://graph.facebook.com/v2.6/me/messages',
-	  qs: {access_token:token}
-  }, function(error, response, body) {
-    if (!error) {
-      if (response.body.error) {
-        console.log(util.inspect(response.body.error, false, null));
-      }
-      console.log('success!');
-		}
-    else {
-      console.log(error);
-    }
-  });
-  var form = req.form();
-  form.append('recipient', JSON.stringify({id:sender}));
-  form.append('message', JSON.stringify(messageData));
-  form.append('filedata', fs.createReadStream('temp/perfect.png'));
 }
 
 function sendTextMessage(sender, text) {
