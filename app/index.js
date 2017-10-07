@@ -6,6 +6,7 @@ const path = require('path');
 const util = require('util')
 const querystring = require('querystring');
 const url = require('url');
+const validUrl = require('valid-url');
 const express = require('express');
 const bodyParser = require('body-parser');
 const request = require('request');
@@ -194,14 +195,7 @@ function getScreenshot(url, callback) {
 }
 
 function isUrl(text) {
-  var result = url.parse(text);
-  console.log('host:' + result.host)
-  console.log('hostname:' + result.hostname)
-  if (result.host) {
-    return true;
-  } else {
-    return false;
-  }
+  return validUrl.isUri(text);
 }
 
 const token = "EAAbtGdEdXhABAJCJZAemnwept6ZCeKsDo11oRTySQDR0pybi10isbUyy1HsXOHZAv9JfozZBmqPkH2FSVIlODjUGedPw3pPbDoln1snmJYjcVAgckCGZBZCU0PvXD8rsliZChuibZB4xjeTqWZBiKqRuB4b95A1yAbjkr9hNIXl8CuAZDZD";
