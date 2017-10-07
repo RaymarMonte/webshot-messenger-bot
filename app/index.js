@@ -5,6 +5,7 @@ const fs = require('fs');
 const path = require('path');
 const util = require('util')
 const querystring = require('querystring');
+const url = require('url');
 const express = require('express');
 const bodyParser = require('body-parser');
 const request = require('request');
@@ -175,6 +176,11 @@ function getScreenshot(url, callback) {
   if (!filename) {
     filename = 'killme';
   }
+
+  if(!isUrl(filename)) {
+    callback(null);
+  }
+
   var filepath = './temp/' + filename + '.png';
   webshot(url, filepath, WEBSHOT_OPTIONS, function(err) {
     if (err) {
@@ -184,6 +190,11 @@ function getScreenshot(url, callback) {
       callback(filepath);
     }
   });
+}
+
+function isUrl(text) {
+  var result = url.parse(text);
+  return result.hostname;
 }
 
 const token = "EAAbtGdEdXhABAJCJZAemnwept6ZCeKsDo11oRTySQDR0pybi10isbUyy1HsXOHZAv9JfozZBmqPkH2FSVIlODjUGedPw3pPbDoln1snmJYjcVAgckCGZBZCU0PvXD8rsliZChuibZB4xjeTqWZBiKqRuB4b95A1yAbjkr9hNIXl8CuAZDZD";
