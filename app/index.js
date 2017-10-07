@@ -19,7 +19,7 @@ const WEBSHOT_OPTIONS = {
     width: 'window',
     height: 'all'
   },
-  quality: 100
+  quality: 150
 }
 const APP_DIR = process.cwd();
 
