@@ -18,8 +18,7 @@ const WEBSHOT_OPTIONS = {
   shotSize: {
     width: 'window',
     height: 'all'
-  },
-  renderDelay: 3000
+  }
 }
 const APP_DIR = process.cwd();
 
@@ -83,7 +82,7 @@ function validateAndSendScreenshot(text, sender) {
         if (luckyFilepath) {
           sendImageMessageAndDestroy(sender, luckyFilepath);
         }
-      });
+      }, {renderDelay, 1000});
     }
   });
 }
@@ -147,19 +146,24 @@ function sendTextMessage(sender, text) {
     })
 }
 
-function getScreenshot(url, callback) {
-  var filename = sanitize(url);
-  if (!filename) {
-    filename = 'killme';
-  }
-
+function getScreenshot(url, callback, additionalOptions) {
   if(!isUrl(url)) {
     callback(null);
     return;
   }
-
+  var filename = sanitize(url);
+  if (!filename) {
+    filename = 'killme';
+  }
   var filepath = './temp/' + filename + '.png';
-  webshot(url, filepath, WEBSHOT_OPTIONS, function(err) {
+
+  var options = WEBSHOT_OPTIONS;
+  if (additionalOptions) {
+    var extend = require('util')._extend;
+    options = extend(options, additionalOptions);
+  }
+
+  webshot(url, filepath, options, function(err) {
     if (err) {
       callback(null);
     } else {
