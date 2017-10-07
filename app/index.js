@@ -162,7 +162,7 @@ function getScreenshot(url, callback, additionalOptions) {
   if (!filename) {
     filename = 'killme';
   }
-  var filepath = './temp/' + filename + '.png';
+  var filepath = './temp/' + filename + '.jpg';
 
   var options = WEBSHOT_OPTIONS;
   if (additionalOptions) {
