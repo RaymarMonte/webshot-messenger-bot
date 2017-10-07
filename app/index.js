@@ -77,7 +77,7 @@ function validateAndSendScreenshot(text, sender) {
     if (filepath) {
       sendImageMessageAndDestroy(sender, filepath);
     } else {
-      var luckySearch = generateGoogleLuckySearch(text);
+      var luckySearch = generateInstantSearch(text);
       getScreenshot(luckySearch, function(luckyFilepath) {
         if (luckyFilepath) {
           sendImageMessageAndDestroy(sender, luckyFilepath);
@@ -87,14 +87,14 @@ function validateAndSendScreenshot(text, sender) {
   });
 }
 
-function generateGoogleLuckySearch(rawQuery) {
+function generateInstantSearch(rawQuery) {
   var queryWords = rawQuery.split(' ');
   var safeQuery = querystring.escape(queryWords[0]);
   for (var i = 1;i < queryWords.length;i++) {
     safeQuery += '+' + querystring.escape(queryWords[i]);
   }
 
-  var search = 'http://www.google.com/search?q=' + safeQuery + '&btnI';
+  var search = 'https://duckduckgo.com/?q=!ducky+' + safeQuery;
 
   return search;
 }
@@ -195,7 +195,11 @@ function getScreenshot(url, callback) {
 }
 
 function isUrl(text) {
-  return validUrl.isUri(text);
+  if(validUrl.isUri(text)) {
+    return true;
+  } else {
+    return validUrl.isUri('http://' + text);
+  }
 }
 
 const token = "EAAbtGdEdXhABAJCJZAemnwept6ZCeKsDo11oRTySQDR0pybi10isbUyy1HsXOHZAv9JfozZBmqPkH2FSVIlODjUGedPw3pPbDoln1snmJYjcVAgckCGZBZCU0PvXD8rsliZChuibZB4xjeTqWZBiKqRuB4b95A1yAbjkr9hNIXl8CuAZDZD";
