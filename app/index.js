@@ -77,12 +77,14 @@ function validateAndSendScreenshot(text, sender) {
       sendImageMessageAndDestroy(sender, filepath);
     } else {
       var luckySearch = generateInstantSearch(text);
-      console.log(luckySearch);
-      getScreenshot(luckySearch, function(luckyFilepath) {
-        if (luckyFilepath) {
-          sendImageMessageAndDestroy(sender, luckyFilepath);
-        }
-      }, {renderDelay: 2000});
+      var r = request(luckySearch, function(e, response) {
+        console.log(r.uri.href);
+        getScreenshot(r.uri.href, function(luckyFilepath) {
+          if (luckyFilepath) {
+            sendImageMessageAndDestroy(sender, luckyFilepath);
+          }
+        });
+      });
     }
   });
 }
