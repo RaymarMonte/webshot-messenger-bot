@@ -19,7 +19,7 @@ const WEBSHOT_OPTIONS = {
     width: 'window',
     height: 'all'
   },
-  takeShotOnCallback: true
+  renderDelay: 3000
 }
 const APP_DIR = process.cwd();
 
