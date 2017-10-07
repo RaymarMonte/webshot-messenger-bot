@@ -18,7 +18,8 @@ const WEBSHOT_OPTIONS = {
   shotSize: {
     width: 'window',
     height: 'all'
-  }
+  },
+  takeShotOnCallback: true
 }
 const APP_DIR = process.cwd();
 
