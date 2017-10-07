@@ -77,7 +77,7 @@ function validateAndSendScreenshot(text, sender) {
     } else {
       var luckySearch = generateGoogleLuckySearch(text);
       getScreenshot(luckySearch, function(luckyFilepath) {
-        if (filepath) {
+        if (luckFilepath) {
           sendImageMessageAndDestroy(sender, luckyFilepath);
         }
       });
