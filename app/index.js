@@ -177,8 +177,9 @@ function getScreenshot(url, callback) {
     filename = 'killme';
   }
 
-  if(!isUrl(filename)) {
+  if(!isUrl(url)) {
     callback(null);
+    return;
   }
 
   var filepath = './temp/' + filename + '.png';
@@ -194,6 +195,7 @@ function getScreenshot(url, callback) {
 
 function isUrl(text) {
   var result = url.parse(text);
+  console.log(result.hostname);
   return result.hostname;
 }
 
