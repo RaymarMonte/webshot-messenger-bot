@@ -4,6 +4,7 @@ const sanitize = require('sanitize-filename');
 const fs = require('fs');
 const path = require('path');
 const util = require('util')
+const querystring = require('querystring');
 const express = require('express');
 const bodyParser = require('body-parser');
 const request = require('request');
@@ -73,8 +74,25 @@ function validateAndSendScreenshot(text, sender) {
   getScreenshot(text, function(filepath) {
     if (filepath) {
       sendImageMessageAndDestroy(sender, filepath);
+    } else {
+      var luckySearch = generateGoogleLuckySearch(text);
+      getScreenshot(luckySearch, function(luckyFilepath) {
+        if (filepath) {
+          sendImageMessageAndDestroy(sender, luckyFilepath);
+        }
+      });
     }
   });
+}
+
+function generateGoogleLuckySearch(rawQuery) {
+  var queryWords = rawQuery.split(' ');
+  var safeQuery = querystring.escape(queryWords[0]);
+  for (var i = 1;i < queryWords.length;i++) {
+    safeQuery += '+' + querystring.escape(queryWords[i]);
+  }
+
+  return safeQuery;
 }
 
 function sendImageMessageAndDestroy(sender, imagePath) {
