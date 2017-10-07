@@ -79,6 +79,7 @@ function validateAndSendScreenshot(text, sender) {
       var luckySearch = generateInstantSearch(text);
       var r = request(luckySearch, function(e, response) {
         console.log(r.uri.href);
+        console.log(res.request.uri.href);
         getScreenshot(r.uri.href, function(luckyFilepath) {
           if (luckyFilepath) {
             sendImageMessageAndDestroy(sender, luckyFilepath);
