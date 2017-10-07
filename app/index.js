@@ -92,7 +92,9 @@ function generateGoogleLuckySearch(rawQuery) {
     safeQuery += '+' + querystring.escape(queryWords[i]);
   }
 
-  return safeQuery;
+  var search = 'http://www.google.com/search?q=' + safeQuery + '&btnI';
+
+  return search;
 }
 
 function sendImageMessageAndDestroy(sender, imagePath) {
