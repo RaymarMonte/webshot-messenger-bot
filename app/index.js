@@ -85,7 +85,7 @@ function validateAndSendScreenshot(text, sender) {
 
         var redirectUrl = querystring.unescape(rawUrl);
         console.log(redirectUrl);
-        getScreenshot(redirectUrl, function(luckyFilepath) {
+        (redirectUrl, function(luckyFilepath) {
           if (luckyFilepath) {
             sendImageMessageAndDestroy(sender, luckyFilepath);
           }
@@ -171,8 +171,10 @@ function getScreenshot(url, callback, additionalOptions) {
     options = extend(options, additionalOptions);
   }
 
+  console.log(options);
   webshot(url, filepath, options, function(err) {
     if (err) {
+      console.log(err);
       callback(null);
     } else {
       console.log(filepath + " generated.");
