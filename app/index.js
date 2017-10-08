@@ -83,7 +83,7 @@ function validateAndSendScreenshot(text, sender) {
         var rawUrl = body.substring(urlLocationStart, urlLocationEnd);
 
         var redirectUrl = querystring.unescape(rawUrl);
-        (redirectUrl, function(luckyFilepath) {
+        getScreenshot(redirectUrl, function(luckyFilepath) {
           if (luckyFilepath) {
             sendImageMessageAndDestroy(sender, luckyFilepath);
           }
