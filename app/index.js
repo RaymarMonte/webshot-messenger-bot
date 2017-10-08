@@ -16,7 +16,7 @@ const app = express();
 const WEBSHOT_OPTIONS = {
   phantomPath: require ('phantomjs2').path,
   shotSize: {
-    width: 'window',
+    width: 'all',
     height: 'all'
   }
 }
