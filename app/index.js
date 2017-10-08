@@ -77,12 +77,14 @@ function validateAndSendScreenshot(text, sender) {
       sendImageMessageAndDestroy(sender, filepath);
     } else {
       var luckySearch = generateInstantSearch(text);
+      console.log(luckySearch);
       var r = request(luckySearch, function(error, response, body) {
         var urlLocationStart = body.indexOf('uddg=') + 5;
         var urlLocationEnd = body.indexOf("'", urlLocationStart);
         var rawUrl = body.substring(urlLocationStart, urlLocationEnd);
 
         var redirectUrl = querystring.unescape(rawUrl);
+        console.log(redirectUrl);
         getScreenshot(redirectUrl, function(luckyFilepath) {
           if (luckyFilepath) {
             sendImageMessageAndDestroy(sender, luckyFilepath);
