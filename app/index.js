@@ -18,6 +18,9 @@ const WEBSHOT_OPTIONS = {
   shotSize: {
     width: 'window',
     height: 'all'
+  },
+  phantomConfig: {
+    ssl-protocol: 'any'
   }
 }
 const APP_DIR = process.cwd();
