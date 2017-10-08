@@ -18,10 +18,6 @@ const WEBSHOT_OPTIONS = {
   shotSize: {
     width: 'window',
     height: 'all'
-  },
-  phantomConfig: {
-    'ssl-protocol': 'any',
-    'ignore-ssl-errors': 'true'
   }
 }
 const APP_DIR = process.cwd();
@@ -81,14 +77,12 @@ function validateAndSendScreenshot(text, sender) {
       sendImageMessageAndDestroy(sender, filepath);
     } else {
       var luckySearch = generateInstantSearch(text);
-      console.log(luckySearch);
       var r = request(luckySearch, function(error, response, body) {
         var urlLocationStart = body.indexOf('uddg=') + 5;
         var urlLocationEnd = body.indexOf("'", urlLocationStart);
         var rawUrl = body.substring(urlLocationStart, urlLocationEnd);
 
         var redirectUrl = querystring.unescape(rawUrl);
-        console.log(redirectUrl);
         (redirectUrl, function(luckyFilepath) {
           if (luckyFilepath) {
             sendImageMessageAndDestroy(sender, luckyFilepath);
@@ -175,7 +169,6 @@ function getScreenshot(url, callback, additionalOptions) {
     options = extend(options, additionalOptions);
   }
 
-  console.log(options);
   webshot(url, filepath, options, function(err) {
     if (err) {
       console.log(err);
